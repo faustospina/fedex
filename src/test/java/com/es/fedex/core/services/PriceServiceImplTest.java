@@ -30,6 +30,9 @@ public class PriceServiceImplTest {
     @InjectMocks
     private PriceServiceImpl service;
 
+    public List<Price> data = DataBaseContentService.getData();
+    public List<PriceDTO> dataDto = DataBaseContentService.getDataDto();
+
     public List<Price> test1 = DataBaseContentService.test1();
     public PriceDTO test1Dto = DataBaseContentService.test1Dto();
 
@@ -99,6 +102,14 @@ public class PriceServiceImplTest {
             Assert.assertNotNull(e);
         }
 
+    }
+
+    @Test
+    public void insertPrices() {
+        Mockito.when(mapper.priceDTOsToPrices(dataDto)).thenReturn(data);
+        service.insertPrices(dataDto);
+        Mockito.verify(repository, Mockito.times(1))
+                .saveAll(data);
     }
 
 }
